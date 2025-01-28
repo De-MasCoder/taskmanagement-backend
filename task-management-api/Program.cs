@@ -8,6 +8,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCarter();
 
+builder.Services.AddSingleton<Supabase.Client>(sp =>
+{
+    var options = new Supabase.SupabaseOptions
+    {
+        AutoRefreshToken = true,
+        AutoConnectRealtime = true
+    };
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var supabaseUrl = configuration["SupabaseUrl"];
+    var supabaseKey = configuration["SupabaseKey"];
+    return new Supabase.Client(supabaseUrl, supabaseKey, options);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
