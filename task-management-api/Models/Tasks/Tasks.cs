@@ -5,7 +5,7 @@ using Supabase.Postgrest.Models;
 namespace task_management_api.Models.Tasks;
 
 [Table("Tasks")]
-public class Tasks : BaseModel
+public class TaskModel : BaseModel
 {
     [PrimaryKey("id",false)]
     public int Id { get; set; }

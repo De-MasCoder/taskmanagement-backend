@@ -1,4 +1,5 @@
 using Carter;
+using task_management_api.Repository.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCarter();
+builder.Services.AddTransient<ITaskRepository, TaskRepository>();
 
 builder.Services.AddSingleton<Supabase.Client>(sp =>
 {
