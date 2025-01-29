@@ -9,7 +9,8 @@ public interface ITaskRepository
     Task<IEnumerable<GetTaskResponseDto>> GetAllTasksAsync();
     Task<GetTaskResponseDto> GetTaskByIdAsync(int taskId);
     Task<GetTaskResponseDto> CreateTask(CreateTaskDto task);
-    Task<GetTaskResponseDto> UpdateTask(int id,CreateTaskDto task);
+    Task<GetTaskResponseDto> UpdateTask(int id,UpdateTaskDto task);
     Task DeleteTask(int taskId);
+    Task<IEnumerable<GetTaskResponseDto>> GetTasksByUserIdAsync(int userId);
 
 }

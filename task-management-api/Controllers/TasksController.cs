@@ -37,7 +37,7 @@ public class TasksController : ICarterModule
         return new OkObjectResult(createdTask);
     }
 
-    private async Task<IActionResult> UpdateTask(int id, [FromBody] CreateTaskDto task)
+    private async Task<IActionResult> UpdateTask(int id, [FromBody] UpdateTaskDto task)
     {
         var updatedTask = await _taskRepository.UpdateTask(id, task);
         if (updatedTask == null)
@@ -52,6 +52,13 @@ public class TasksController : ICarterModule
         await _taskRepository.DeleteTask(id);
         return new OkResult();
     }
+
+    private async Task<IActionResult> GetTasksByUserId(int userId)
+    {
+        var tasks = await _taskRepository.GetTasksByUserIdAsync(userId);
+        return new OkObjectResult(tasks);
+    }
+
     #endregion
 
     #region  Routes
@@ -61,6 +68,9 @@ public class TasksController : ICarterModule
 
         tasks.MapGet("", GetAllTasks)
             .WithName(nameof(GetAllTasks));
+
+        tasks.MapGet("user/{userId:int}", GetTasksByUserId)
+            .WithName(nameof(GetTasksByUserId));
 
         tasks.MapGet("{id:int}", GetTaskById)
             .WithName(nameof(GetTaskById));

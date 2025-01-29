@@ -17,4 +17,8 @@ public class TaskModel : BaseModel
     public DateTime DueDate { get; set; }
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
+    [Column("status")]
+    public string Status { get; set; }
+    [Column("user_id")]
+    public int UserId { get; set; }
 }
