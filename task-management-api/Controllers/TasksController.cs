@@ -3,9 +3,11 @@ using Carter;
 using Microsoft.AspNetCore.Mvc;
 using task_management_api.Models.Tasks;
 using task_management_api.Repository.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace task_management_api.Controllers;
 
+[Authorize]
 public class TasksController : ICarterModule
 {
     private readonly ITaskRepository _taskRepository;
@@ -64,7 +66,7 @@ public class TasksController : ICarterModule
     #region  Routes
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        var tasks = app.MapGroup("api/tasks");
+        var tasks = app.MapGroup("api/tasks").RequireAuthorization();
 
         tasks.MapGet("", GetAllTasks)
             .WithName(nameof(GetAllTasks));
