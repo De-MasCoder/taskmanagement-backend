@@ -56,6 +56,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost4200",
+        policyBuilder => policyBuilder.WithOrigins(builder.Configuration["AllowedHosts"])
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod());
+});
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddSingleton<Supabase.Client>(sp =>
@@ -87,5 +96,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapCarter();
+app.UseCors("AllowLocalhost4200");
 
 app.Run();
