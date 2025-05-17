@@ -15,3 +15,14 @@ Data/obj/Debug/net8.0/Data.AssemblyInfoInputs.cache
 Data/obj/Debug/net8.0/Data.GeneratedMSBuildEditorConfig.editorconfig
 .idea/.idea.taskmanagement-backend/.idea/workspace.xml
 .idea/.idea.taskmanagement-backend/.idea/projectSettingsUpdater.xml
+/.vs/taskmanagement-backend/config
+/.vs/taskmanagement-backend/CopilotIndices/17.13.441.19478
+/.vs/taskmanagement-backend/DesignTimeBuild
+/.vs/taskmanagement-backend/FileContentIndex
+/.vs/taskmanagement-backend/v17
+/TaskContracts/obj
+/TaskContracts/bin/Debug/net8.0
+/TaskEmailService/bin/Debug/net9.0
+/TaskEmailService/obj
+/TaskEmailService/appsettings.Development.json
+/task-management-api/appsettings.Development.json

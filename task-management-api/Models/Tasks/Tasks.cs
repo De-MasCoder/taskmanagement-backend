@@ -8,7 +8,7 @@ namespace task_management_api.Models.Tasks;
 public class TaskModel : BaseModel
 {
     [PrimaryKey("id",false)]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     [Column("name")]
     public string Name { get; set; }
     [Column("description")]
@@ -20,5 +20,5 @@ public class TaskModel : BaseModel
     [Column("status")]
     public string Status { get; set; }
     [Column("user_id")]
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
 }

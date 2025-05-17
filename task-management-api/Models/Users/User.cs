@@ -7,7 +7,7 @@ namespace task_management_api.Models.Users;
 public class User
 {
     [PrimaryKey("id", false)]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     [Column("name")]
     public string Name { get; set; }
     [Column("email_address")]

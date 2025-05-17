@@ -8,6 +8,6 @@ public class UpdateTaskDto
     public string? Description { get; set; }
     public DateTime DueDate { get; set; }
     public required string Status { get; set; }
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
 
 }

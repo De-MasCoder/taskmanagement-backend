@@ -7,10 +7,10 @@ namespace task_management_api.Repository.Tasks;
 public interface ITaskRepository
 {
     Task<IEnumerable<GetTaskResponseDto>> GetAllTasksAsync();
-    Task<GetTaskResponseDto> GetTaskByIdAsync(int taskId);
+    Task<GetTaskResponseDto> GetTaskByIdAsync(Guid taskId);
     Task<GetTaskResponseDto> CreateTask(CreateTaskDto task);
-    Task<GetTaskResponseDto> UpdateTask(int id,UpdateTaskDto task);
-    Task DeleteTask(int taskId);
-    Task<IEnumerable<GetTaskResponseDto>> GetTasksByUserIdAsync(int userId);
+    Task<GetTaskResponseDto> UpdateTask(Guid id,UpdateTaskDto task);
+    Task DeleteTask(Guid taskId);
+    Task<IEnumerable<GetTaskResponseDto>> GetTasksByUserIdAsync(Guid userId);
 
 }

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-TaskEmailService-5bd146d5-0f6f-470b-ba11-120bcb5768fe</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.12.1" />
+    <PackageReference Include="MassTransit" Version="8.4.1" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.4.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
+    <PackageReference Include="Supabase" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TaskContracts\TaskContracts.csproj" />
+  </ItemGroup>
+</Project>

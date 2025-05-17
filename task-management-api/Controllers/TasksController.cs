@@ -1,9 +1,10 @@
-using System;
 using Carter;
 using Microsoft.AspNetCore.Mvc;
 using task_management_api.Models.Tasks;
 using task_management_api.Repository.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using MassTransit;
+using TaskContracts.Events;
 
 namespace task_management_api.Controllers;
 
@@ -11,59 +12,66 @@ namespace task_management_api.Controllers;
 public class TasksController : ICarterModule
 {
     private readonly ITaskRepository _taskRepository;
+
     public TasksController(ITaskRepository taskRepository)
     {
         _taskRepository = taskRepository;
     }
 
     #region private functions
-    private async Task<IActionResult> GetAllTasks()
+    private async Task<IResult> GetAllTasks()
     {
         var tasks = await _taskRepository.GetAllTasksAsync();
-        return new OkObjectResult(tasks);
+        return Results.Ok(tasks);
     }
 
-    private async Task<IActionResult> GetTaskById(int id)
+    private async Task<IResult> GetTaskById(Guid id)
     {
         var task = await _taskRepository.GetTaskByIdAsync(id);
-        if (task == null)
-        {
-            return new NotFoundResult();
-        }
-        return new OkObjectResult(task);
+        return task is null ? Results.NotFound() : Results.Ok(task);
     }
 
-    private async Task<IActionResult> CreateTask([FromBody] CreateTaskDto task)
+    private async Task<IResult> CreateTask(HttpContext context, [FromBody] CreateTaskDto task)
     {
         var createdTask = await _taskRepository.CreateTask(task);
-        return new OkObjectResult(createdTask);
+
+        // Resolve scoped IPublishEndpoint from HttpContext
+        var publishEndpoint = context.RequestServices.GetRequiredService<IPublishEndpoint>();
+
+        await publishEndpoint.Publish(new TaskCreatedEvent()
+        {
+            Id = createdTask.Id,
+            Name = createdTask.Name,
+            Description = createdTask.Description,
+            DueDate = createdTask.DueDate,
+            CreatedAt = createdTask.CreatedAt,
+            Status = createdTask.Status,
+            UserId = createdTask.UserId
+        });
+
+        return Results.Ok(createdTask);
     }
 
-    private async Task<IActionResult> UpdateTask(int id, [FromBody] UpdateTaskDto task)
+    private async Task<IResult> UpdateTask(Guid id, [FromBody] UpdateTaskDto task)
     {
         var updatedTask = await _taskRepository.UpdateTask(id, task);
-        if (updatedTask == null)
-        {
-            return new NotFoundResult();
-        }
-        return new OkObjectResult(updatedTask);
+        return updatedTask is null ? Results.NotFound() : Results.Ok(updatedTask);
     }
 
-    private async Task<IActionResult> DeleteTask(int id)
+    private async Task<IResult> DeleteTask(Guid id)
     {
         await _taskRepository.DeleteTask(id);
-        return new OkResult();
+        return Results.Ok();
     }
 
-    private async Task<IActionResult> GetTasksByUserId(int userId)
+    private async Task<IResult> GetTasksByUserId(Guid userId)
     {
         var tasks = await _taskRepository.GetTasksByUserIdAsync(userId);
-        return new OkObjectResult(tasks);
+        return Results.Ok(tasks);
     }
-
     #endregion
 
-    #region  Routes
+    #region Routes
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         var tasks = app.MapGroup("api/tasks").RequireAuthorization();
@@ -71,21 +79,20 @@ public class TasksController : ICarterModule
         tasks.MapGet("", GetAllTasks)
             .WithName(nameof(GetAllTasks));
 
-        tasks.MapGet("user/{userId:int}", GetTasksByUserId)
+        tasks.MapGet("user/{userId:Guid}", GetTasksByUserId)
             .WithName(nameof(GetTasksByUserId));
 
-        tasks.MapGet("{id:int}", GetTaskById)
+        tasks.MapGet("{id:Guid}", GetTaskById)
             .WithName(nameof(GetTaskById));
 
         tasks.MapPost("", CreateTask)
             .WithName(nameof(CreateTask));
 
-        tasks.MapPut("{id:int}", UpdateTask)
+        tasks.MapPut("{id:Guid}", UpdateTask)
             .WithName(nameof(UpdateTask));
 
-        tasks.MapDelete("{id:int}", DeleteTask)
+        tasks.MapDelete("{id:Guid}", DeleteTask)
             .WithName(nameof(DeleteTask));
     }
     #endregion
-    
 }

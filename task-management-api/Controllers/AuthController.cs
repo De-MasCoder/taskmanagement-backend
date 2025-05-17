@@ -1,6 +1,8 @@
 using Carter;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Supabase;
+using System.Text.Json.Serialization;
 using task_management_api.Models;
 
 namespace task_management_api.Controllers;
@@ -27,7 +29,7 @@ public class AuthController : ICarterModule
             }
             catch (Exception ex)
             {
-                return Results.BadRequest(new { Message = ex.Message });
+                return Results.BadRequest(new { Message = JsonConvert.DeserializeObject<AuthResponseModel>(ex.Message) });
             }
         });
     }

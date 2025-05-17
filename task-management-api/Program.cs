@@ -5,10 +5,24 @@ using task_management_api.Repository.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using task_management_api.Middleware;
+using Serilog;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+builder.Host.UseSerilog();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -67,6 +81,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddAuthorization();
 
+// Supabase
 builder.Services.AddSingleton<Supabase.Client>(sp =>
 {
     var options = new Supabase.SupabaseOptions
@@ -75,12 +90,29 @@ builder.Services.AddSingleton<Supabase.Client>(sp =>
         AutoConnectRealtime = true
     };
     var configuration = sp.GetRequiredService<IConfiguration>();
-    var supabaseUrl = configuration["SupabaseUrl"];
-    var supabaseKey = configuration["SupabaseKey"];
+    var supabaseUrl = configuration["Supabase:Url"];
+    var supabaseKey = configuration["Supabase:Key"];
     return new Supabase.Client(supabaseUrl, supabaseKey, options);
 });
 
+// RabbitMQ & Mass transit
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((ctx, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username(builder.Configuration["RabbitMQ:Username"] ?? string.Empty);
+            h.Password(builder.Configuration["RabbitMQ:Password"] ?? string.Empty);
+        });
+    });
+});
+
+
 var app = builder.Build();
+
+// Exception handling
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -40,7 +40,7 @@ public class TaskRepository : ITaskRepository
         return tasks.ToList();
     }
 
-    public async Task<GetTaskResponseDto> GetTaskByIdAsync(int taskId)
+    public async Task<GetTaskResponseDto> GetTaskByIdAsync(Guid taskId)
     {
         var response = await _supabaseClient.From<TaskModel>().Where(t => t.Id == taskId).Get();
 
@@ -73,6 +73,7 @@ public class TaskRepository : ITaskRepository
     {
         var task = new TaskModel
         {
+            Id = createTaskDto.Id,
             Name = createTaskDto.Name,
             Description = createTaskDto.Description,
             DueDate = createTaskDto.DueDate,
@@ -101,7 +102,7 @@ public class TaskRepository : ITaskRepository
         return taskResponse;
     }
 
-    public async Task<GetTaskResponseDto> UpdateTask(int id, UpdateTaskDto updateTaskDto)
+    public async Task<GetTaskResponseDto> UpdateTask(Guid id, UpdateTaskDto updateTaskDto)
     {
         var task = new TaskModel
         {
@@ -136,12 +137,12 @@ public class TaskRepository : ITaskRepository
         return taskResponse;
     }
 
-    public async Task DeleteTask(int id)
+    public async Task DeleteTask(Guid id)
     {
         await _supabaseClient.From<TaskModel>().Where(t => t.Id == id).Delete();
     }
 
-    public async Task<IEnumerable<GetTaskResponseDto>> GetTasksByUserIdAsync(int userId)
+    public async Task<IEnumerable<GetTaskResponseDto>> GetTasksByUserIdAsync(Guid userId)
     {
         var response = await _supabaseClient.From<TaskModel>().Where(t => t.UserId == userId).Get();
 
