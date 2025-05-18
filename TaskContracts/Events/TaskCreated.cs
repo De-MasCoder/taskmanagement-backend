@@ -1,6 +1,6 @@
 ﻿namespace TaskContracts.Events
 {
-    public class TaskCreatedEvent
+    public class TaskCreated
     {
         public Guid Id { get; set; }
         public required string Name { get; set; }

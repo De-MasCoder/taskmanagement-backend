@@ -9,6 +9,10 @@
       {
         "Path": "TaskEmailService\\TaskEmailService.csproj",
         "Action": "Start"
+      },
+      {
+        "Path": "TaskFileUploadService\\TaskFileUploadService.csproj",
+        "Action": "Start"
       }
     ]
   }

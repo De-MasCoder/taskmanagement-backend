@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskContracts", "TaskContra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskEmailService", "TaskEmailService\TaskEmailService.csproj", "{6CFF34C3-0D86-2EDF-2037-135F486E03B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.Application", "Task.Application\TaskManagement.Application.csproj", "{BF3C9BD0-082B-4921-9F71-A9A1EC7F508F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.Infrastructure", "Task.Infrastructure\TaskManagement.Infrastructure.csproj", "{72D4718D-20F2-4FDB-B3A3-70AB35683760}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskFileUploadService", "TaskFileUploadService\TaskFileUploadService.csproj", "{348E076F-071F-7D48-2DBB-6B1BAC184F81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +33,18 @@ Global
 		{6CFF34C3-0D86-2EDF-2037-135F486E03B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CFF34C3-0D86-2EDF-2037-135F486E03B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CFF34C3-0D86-2EDF-2037-135F486E03B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF3C9BD0-082B-4921-9F71-A9A1EC7F508F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF3C9BD0-082B-4921-9F71-A9A1EC7F508F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF3C9BD0-082B-4921-9F71-A9A1EC7F508F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF3C9BD0-082B-4921-9F71-A9A1EC7F508F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72D4718D-20F2-4FDB-B3A3-70AB35683760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72D4718D-20F2-4FDB-B3A3-70AB35683760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72D4718D-20F2-4FDB-B3A3-70AB35683760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72D4718D-20F2-4FDB-B3A3-70AB35683760}.Release|Any CPU.Build.0 = Release|Any CPU
+		{348E076F-071F-7D48-2DBB-6B1BAC184F81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{348E076F-071F-7D48-2DBB-6B1BAC184F81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{348E076F-071F-7D48-2DBB-6B1BAC184F81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{348E076F-071F-7D48-2DBB-6B1BAC184F81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

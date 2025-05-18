@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-TaskFileUploadService-06abfa2b-39a6-4a5b-85bd-0513157678ef</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.4.1" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.4.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Task.Application\TaskManagement.Application.csproj" />
+    <ProjectReference Include="..\Task.Infrastructure\TaskManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\TaskContracts\TaskContracts.csproj" />
+  </ItemGroup>
+</Project>

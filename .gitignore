@@ -26,3 +26,12 @@ Data/obj/Debug/net8.0/Data.GeneratedMSBuildEditorConfig.editorconfig
 /TaskEmailService/obj
 /TaskEmailService/appsettings.Development.json
 /task-management-api/appsettings.Development.json
+/.vs/ProjectEvaluation
+/TaskFileUploadService/obj
+/.vs/taskmanagement-backend/copilot-chat/6a89edec/sessions
+/Task.Application/bin/Debug/net8.0
+/Task.Application/obj
+/Task.Infrastructure/bin/Debug/net8.0
+/Task.Infrastructure/obj
+/TaskFileUploadService/bin/Debug/net9.0
+/TaskFileUploadService/appsettings.Development.json
