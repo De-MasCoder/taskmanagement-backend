@@ -38,7 +38,7 @@ public class TasksController : ICarterModule
         // Resolve scoped IPublishEndpoint from HttpContext
         var publishEndpoint = context.RequestServices.GetRequiredService<IPublishEndpoint>();
 
-        await publishEndpoint.Publish(new TaskCreatedEvent()
+        await publishEndpoint.Publish(new TaskCreated()
         {
             Id = createdTask.Id,
             Name = createdTask.Name,
@@ -69,12 +69,43 @@ public class TasksController : ICarterModule
         var tasks = await _taskRepository.GetTasksByUserIdAsync(userId);
         return Results.Ok(tasks);
     }
+
+    public async Task<IActionResult> UploadAttachment(Guid taskId, IFormFile file, CancellationToken cancellationToken,  HttpContext context)
+    {
+        if (file == null || file.Length == 0)
+            return new BadRequestObjectResult("No file uploaded.");
+
+        const long maxFileSize = 4 * 1024 * 1024; // 4MB
+        if (file.Length > maxFileSize)
+            return new BadRequestObjectResult("File size exceeds 4MB limit.");
+
+        byte[] fileBytes;
+        using (var ms = new MemoryStream())
+        {
+            await file.CopyToAsync(ms, cancellationToken);
+            fileBytes = ms.ToArray();
+        }
+
+        // Resolve scoped IPublishEndpoint from HttpContext
+        var publishEndpoint = context.RequestServices.GetRequiredService<IPublishEndpoint>();
+
+        await publishEndpoint.Publish(new FileUploadRequested
+        {
+            TaskId = taskId,
+            FileName = file.FileName,
+            FileBytes = fileBytes,
+            ContentType = file.ContentType
+        }, cancellationToken);
+
+        return new OkObjectResult("File upload started.");
+    }
+
     #endregion
 
     #region Routes
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        var tasks = app.MapGroup("api/tasks").RequireAuthorization();
+        var tasks = app.MapGroup("api/tasks").RequireAuthorization().DisableAntiforgery();
 
         tasks.MapGet("", GetAllTasks)
             .WithName(nameof(GetAllTasks));
@@ -93,6 +124,10 @@ public class TasksController : ICarterModule
 
         tasks.MapDelete("{id:Guid}", DeleteTask)
             .WithName(nameof(DeleteTask));
+
+        tasks.MapPost("{taskId:Guid}/attachments", UploadAttachment)
+            .Accepts<IFormFile>("multipart/form-data")
+            .WithName(nameof(UploadAttachment));
     }
     #endregion
 }

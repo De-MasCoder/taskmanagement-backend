@@ -5,7 +5,7 @@ using TaskEmailService.Helpers;
 
 namespace TaskEmailService
 {
-    public class TaskCreatedEventConsumer : IConsumer<TaskCreatedEvent>
+    public class TaskCreatedEventConsumer : IConsumer<TaskCreated>
     {
         private readonly Supabase.Client _supabase;
         private readonly ILogger<TaskCreatedEventConsumer> _logger;
@@ -17,7 +17,7 @@ namespace TaskEmailService
             _logger = logger;
             _configuration = configuration;
         }
-        public async Task Consume(ConsumeContext<TaskCreatedEvent> context)
+        public async Task Consume(ConsumeContext<TaskCreated> context)
         {
             try
             {
