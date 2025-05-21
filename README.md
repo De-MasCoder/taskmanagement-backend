@@ -1,5 +1,10 @@
 # TaskManagement Backend
 ### [NB: This is work in progress]
+#### Todo :
+- Add Proper exception handling and logging on EmailService and FileUpload
+- Adding resilience and fault tolerance
+- Adding Rate limiting
+  
 A robust API for managing tasks and projects.
 
 ## Overview
