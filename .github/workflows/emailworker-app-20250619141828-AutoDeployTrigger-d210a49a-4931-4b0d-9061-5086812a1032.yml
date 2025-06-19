@@ -1,0 +1,48 @@
+name: Trigger auto deployment for emailworker-app-20250619141828
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/emailworker-app-20250619141828-AutoDeployTrigger-d210a49a-4931-4b0d-9061-5086812a1032.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.EMAILWORKERAPP20250619141828_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.EMAILWORKERAPP20250619141828_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.EMAILWORKERAPP20250619141828_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}
+          _dockerfilePathKey_: _dockerfilePath_
+          registryUrl: emailworker20250619142301.azurecr.io
+          registryUsername: ${{ secrets.EMAILWORKERAPP20250619141828_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.EMAILWORKERAPP20250619141828_REGISTRY_PASSWORD }}
+          containerAppName: emailworker-app-20250619141828
+          resourceGroup: smartsec
+          imageToBuild: emailworker20250619142301.azurecr.io/emailworker-app-20250619141828:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+
